@@ -132,7 +132,7 @@
         <div class="sidebar-line"></div>
         <div class="sidebar-module">
             <h3 class="text-center">Toggle Watermark</h3>
-            <br>
+            <br />
             <div class="toggle-options">
                 <b-form-checkbox v-model="auto_position"
                     >Position Auto</b-form-checkbox
@@ -235,13 +235,15 @@
                     Hide</b-button
                 >
             </div>
-            
         </div>
     </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+// import Pusher from "pusher";
+import Pusher from "pusher-js";
+var a = "aaa";
 export default {
     name: "AppSideBar",
     data() {
@@ -264,6 +266,39 @@ export default {
             const res = await vm.authLogout();
             vm.$router.push("/auth").catch(() => {});
         },
+    },
+    mounted() {
+        const pusher = new Pusher(process.env.VUE_APP_PUSHER_APP_KEY, {
+            cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
+        });
+
+        const toggle_user_data_channel1 = pusher.subscribe(
+            "toggle-userdata-channel1"
+        );
+
+        // toggle_user_data_channel1.bind("client-SendMessage", (e) => {
+        //     console.log(e);
+        // });
+
+        toggle_user_data_channel1.trigger("client-SendMessage", {
+            message: "hello world",
+        });
+
+        // const pusher = new Pusher({
+        //     appId: process.env.VUE_APP_PUSHER_APP_ID,
+        //     key: process.env.VUE_APP_PUSHER_APP_KEY,
+        //     secret: process.env.VUE_APP_PUSHER_APP_SECRET,
+        //     cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
+        // });
+
+        // // pusher.subscribe("toggle-userdata-channel1");
+
+        // pusher
+        //     .trigger("toggle-userdata-channel1", "SendMessage", {
+        //         message: "hello world",
+        //     })
+        //     // .then(console.log)
+        //     // .catch((e) => console.log(e));
     },
 };
 </script>
@@ -291,5 +326,8 @@ export default {
 .custom-control-label {
     margin-left: 5px;
     font-size: 15px !important;
+}
+#color {
+    height: 26px;
 }
 </style>
