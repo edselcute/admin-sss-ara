@@ -10,6 +10,7 @@ import stream_group from './modules/stream_group'
 import stream from './modules/stream'
 import domain from './modules/domain'
 import log from './modules/log'
+import sitepref from './modules/sitepref'
 
 Vue.use(Vuex)
 
@@ -27,5 +28,6 @@ export default new Vuex.Store({
         stream,
         domain,
         log,
+        sitepref,
     }
 })

@@ -220,18 +220,21 @@
             <div class="spacer-15"></div>
 
             <div style="width: 100%">
+                
                 <b-button
                     pi
                     variant="primary"
                     style="height: 30px"
-                    class="w-100">
+                    class="w-100"
+                    @click="toggleUserData(1)">
                     Show</b-button
                 >
                 <b-button
                     pi
                     variant="default"
                     style="height: 30px"
-                    class="w-100">
+                    class="w-100"
+                    @click="toggleUserData(0)">
                     Hide</b-button
                 >
             </div>
@@ -258,6 +261,9 @@ export default {
         ...mapActions("auth", {
             authLogout: "logoutUser",
         }),
+        ...mapActions("sitepref", {
+            siteprefUpdate: "update",
+        }),
         selectPostion(val) {
             this.toggle_position = val;
         },
@@ -266,39 +272,50 @@ export default {
             const res = await vm.authLogout();
             vm.$router.push("/auth").catch(() => {});
         },
+        async toggleUserData(on) {
+            var vm = this;
+            const res = await vm.siteprefUpdate({
+                key: "toggle_user_data",
+                value: on,
+            });
+
+            if(res.data.status == 2) {
+                vm.$bvToast.toast(`Toggled User Data  ${on?'On':'Off'}`, {
+                        title: `Success`,
+                        toaster: `b-toaster-top-right`,
+                        solid: true,
+                        variant: "warning",
+                        appendToast: true,
+                    });
+            }
+        },
     },
     mounted() {
         const pusher = new Pusher(process.env.VUE_APP_PUSHER_APP_KEY, {
             cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
         });
-
         const toggle_user_data_channel1 = pusher.subscribe(
             "toggle-userdata-channel1"
         );
-
-        // toggle_user_data_channel1.bind("client-SendMessage", (e) => {
-        //     console.log(e);
-        // });
-
-        toggle_user_data_channel1.trigger("client-SendMessage", {
-            message: "hello world",
+        toggle_user_data_channel1.bind("toggle-userdata-event1", (e) => {
+            console.log(e);
         });
-
+        // toggle_user_data_channel1.trigger("client-SendMessage", {
+        //     message: "hello world",
+        // });
         // const pusher = new Pusher({
         //     appId: process.env.VUE_APP_PUSHER_APP_ID,
         //     key: process.env.VUE_APP_PUSHER_APP_KEY,
         //     secret: process.env.VUE_APP_PUSHER_APP_SECRET,
         //     cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
         // });
-
-        // // pusher.subscribe("toggle-userdata-channel1");
-
+        // pusher.subscribe("toggle-userdata-channel1");
         // pusher
         //     .trigger("toggle-userdata-channel1", "SendMessage", {
         //         message: "hello world",
         //     })
-        //     // .then(console.log)
-        //     // .catch((e) => console.log(e));
+        //     .then(console.log)
+        //     .catch((e) => console.log(e));
     },
 };
 </script>
