@@ -436,7 +436,7 @@ export default {
             var vm = this;
             vm.busy = true;
             const res =
-                vm.mode == ""
+                vm.mode == "add"
                     ? await vm.adminCreate(vm.pl)
                     : await vm.adminUpdate(vm.pl);
             vm.busy = false;
