@@ -43,6 +43,7 @@
                     ><i class="fa fa-edit"></i> Note</a
                 >
             </li>
+            
         </ul>
         <div class="tab-content">
             <div
@@ -120,11 +121,13 @@
                         required=""
                         aria-required="true"></textarea>
                     <div class="spacer-10"></div>
-                    <button
-                        class="btn btn-block btn-primary"
+                    <b-button
+                        class="w-100"
+                        variant="success"
+                    
                         onclick="save_note()">
                         Save
-                    </button>
+                    </b-button>
                 </div>
             </div>
         </div>
@@ -134,13 +137,13 @@
             <h3 class="text-center">Toggle Watermark</h3>
             <br />
             <div class="toggle-options">
-                <b-form-checkbox v-model="auto_position"
+                <b-form-checkbox v-model="auto_position" disabled
                     >Position Auto</b-form-checkbox
                 >
                 <b-form-input
                     id="color"
                     type="color"
-                    v-model="toggle_color"></b-form-input>
+                    v-model="toggle_color" disabled></b-form-input>
             </div>
             <div class="toggle-positions mt-2">
                 <b-button
@@ -177,9 +180,9 @@
                 >
                 <b-button
                     @click="selectPostion(0)"
-                    disabled
+                    :disabled="auto_position"
                     block
-                    variant="default"
+                     :variant="toggle_position == 0 ? 'dark' : 'default'"
                     style="height: 50px">
                     Center</b-button
                 >
@@ -264,6 +267,7 @@ export default {
         ...mapActions("sitepref", {
             siteprefUpdate: "update",
         }),
+        
         selectPostion(val) {
             this.toggle_position = val;
         },
@@ -274,7 +278,9 @@ export default {
         },
         async toggleUserData(on) {
             var vm = this;
+        // Updating the value of the toggle_user_data in the database.
             const res = await vm.siteprefUpdate({
+                position: vm.toggle_position,
                 key: "toggle_user_data",
                 value: on,
             });
@@ -291,31 +297,7 @@ export default {
         },
     },
     mounted() {
-        const pusher = new Pusher(process.env.VUE_APP_PUSHER_APP_KEY, {
-            cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
-        });
-        const toggle_user_data_channel1 = pusher.subscribe(
-            "toggle-userdata-channel1"
-        );
-        toggle_user_data_channel1.bind("toggle-userdata-event1", (e) => {
-            console.log(e);
-        });
-        // toggle_user_data_channel1.trigger("client-SendMessage", {
-        //     message: "hello world",
-        // });
-        // const pusher = new Pusher({
-        //     appId: process.env.VUE_APP_PUSHER_APP_ID,
-        //     key: process.env.VUE_APP_PUSHER_APP_KEY,
-        //     secret: process.env.VUE_APP_PUSHER_APP_SECRET,
-        //     cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
-        // });
-        // pusher.subscribe("toggle-userdata-channel1");
-        // pusher
-        //     .trigger("toggle-userdata-channel1", "SendMessage", {
-        //         message: "hello world",
-        //     })
-        //     .then(console.log)
-        //     .catch((e) => console.log(e));
+        
     },
 };
 </script>
