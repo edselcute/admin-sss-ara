@@ -14,17 +14,12 @@ const state = {
 const actions = {
     getList({ commit, rootGetters, dispatch }, pl) {
         return new Promise(async function(resolve) {
-            // const f = await fetch('/sample_data/admin.json')
-            //     .then((response) => response.json())
-
-            // commit('setData', f)
-
             $api.post(`/admin/list${pl.page_no ? '?page=' + pl.page_no : ''}`, pl, {
                     headers: { 'Authorization': rootGetters['auth/token_bearer'] }
                 })
                 .then(function(res) {
-                    if (res.status == 200) {
-                        commit('setData', res.data)
+                    if (res.data.status == 1) {
+                        commit('setData', res.data.data)
                         resolve(true)
                     }
                 })
