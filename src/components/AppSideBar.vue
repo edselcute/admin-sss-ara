@@ -121,13 +121,11 @@
                         required=""
                         aria-required="true"></textarea>
                     <div class="spacer-10"></div>
-                    <b-button
-                        class="w-100"
-                        variant="success"
-                    
+                    <button
+                        class="btn btn-block btn-primary"
                         onclick="save_note()">
                         Save
-                    </b-button>
+                    </button>
                 </div>
             </div>
         </div>
@@ -143,14 +141,14 @@
                 <b-form-input
                     id="color"
                     type="color"
-                    v-model="toggle_color" disabled></b-form-input>
+                    v-model="toggle_color"></b-form-input>
             </div>
             <div class="toggle-positions mt-2">
                 <b-button
                     @click="selectPostion(5)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 5 ? 'dark' : 'default'"
+                    :variant="toggle_position == 5 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Top Left</b-button
                 >
@@ -158,7 +156,7 @@
                     @click="selectPostion(1)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 1 ? 'dark' : 'default'"
+                    :variant="toggle_position == 1 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Top</b-button
                 >
@@ -166,7 +164,7 @@
                     @click="selectPostion(6)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 6 ? 'dark' : 'default'"
+                    :variant="toggle_position == 6 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Top Right</b-button
                 >
@@ -174,7 +172,7 @@
                     @click="selectPostion(3)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 3 ? 'dark' : 'default'"
+                    :variant="toggle_position == 3 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Left</b-button
                 >
@@ -182,7 +180,7 @@
                     @click="selectPostion(0)"
                     :disabled="auto_position"
                     block
-                     :variant="toggle_position == 0 ? 'dark' : 'default'"
+                     :variant="toggle_position == 0 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Center</b-button
                 >
@@ -190,7 +188,7 @@
                     @click="selectPostion(4)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 4 ? 'dark' : 'default'"
+                    :variant="toggle_position == 4 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Right</b-button
                 >
@@ -198,7 +196,7 @@
                     @click="selectPostion(7)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 7 ? 'dark' : 'default'"
+                    :variant="toggle_position == 7 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Bottom Left</b-button
                 >
@@ -206,7 +204,7 @@
                     @click="selectPostion(2)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 2 ? 'dark' : 'default'"
+                    :variant="toggle_position == 2 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Bottom</b-button
                 >
@@ -214,7 +212,7 @@
                     @click="selectPostion(8)"
                     :disabled="auto_position"
                     block
-                    :variant="toggle_position == 8 ? 'dark' : 'default'"
+                    :variant="toggle_position == 8 ? 'secondary' : 'default'"
                     style="height: 50px">
                     Bottom Right</b-button
                 >
@@ -255,7 +253,7 @@ export default {
     data() {
         return {
             tab: 1,
-            auto_position: true,
+            auto_position: false,
             toggle_color: "#FFFFFF",
             toggle_position: 0,
         };
