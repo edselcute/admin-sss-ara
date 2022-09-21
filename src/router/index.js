@@ -5,6 +5,7 @@ import store from '../store';
 
 Vue.use(VueRouter)
 
+/* A route configuration. */
 const routes = [{
         path: '',
         redirect: '/auth',
@@ -104,6 +105,7 @@ const routes = [{
 ]
 
 
+/* Creating a new instance of VueRouter and passing in the routes. */
 const router = new VueRouter({
     mode: 'hash',
     base: process.env.BASE_URL,
@@ -115,6 +117,11 @@ const sg = store.getters
 const restrictions = require('../restrictions')
 const chkprofile = store.dispatch('auth/getProfile')
 
+/**
+ * It returns an array of strings that are the names of the pages that the user is allowed to access.
+ * @param user_type - 1
+ * @returns An array of objects.
+ */
 function getRestriction(user_type) {
     var access = []
     switch (user_type) {
