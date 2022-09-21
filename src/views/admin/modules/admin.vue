@@ -92,6 +92,14 @@
                         </b-button>
                         <b-button
                             class="mb-0"
+                            variant="-secondary"
+                            size="sm"
+                            pill
+                            @click="showForm('edit', row.item)">
+                            <b-icon icon="toggle-on" aria-hidden="true"></b-icon> 
+                        </b-button>
+                        <b-button
+                            class="mb-0"
                             variant="outline-secondary"
                             size="sm"
                             pill
@@ -393,8 +401,6 @@ export default {
             if (m == "edit") {
                 vm.pl.id = r.id;
                 vm.pl.username = r.username;
-                // vm.pl.password = r.password;
-                // vm.pl.password_confirmation = r.password_confirmation;
                 vm.pl.email = r.email;
                 vm.pl.first_name = r.first_name;
                 vm.pl.last_name = r.last_name;
@@ -409,9 +415,9 @@ export default {
 
             var pl = {
                 page_no: n ? n : 1,
-                limit: 50,
+                limit: 15,
                 sort_column: "username",
-                sort_order: "desc",
+                sort_order: "asc",
             };
 
             if (reset) {
@@ -438,18 +444,33 @@ export default {
             const res =
                 vm.mode == "add"
                     ? await vm.adminCreate(vm.pl)
-                    : await vm.adminUpdate(vm.pl);
+                    : await vm.adminUpdate({
+                          id: vm.pl.id,
+                          email: vm.pl.email,
+                          first_name: vm.pl.first_name,
+                          last_name: vm.pl.last_name,
+                          username: vm.pl.username,
+                          type: vm.pl.type,
+                          status: vm.pl.status,
+                      });
             vm.busy = false;
+            console.log(res);
             if (res.status == 200) {
-                if (res.data.status == 2) {
+                if (res.data.status == 1) {
                     vm.$bvModal.hide("modal-form");
-                    vm.$bvToast.toast(`Created new administrator`, {
-                        title: `Success`,
-                        toaster: `b-toaster-top-right`,
-                        solid: true,
-                        variant: "success",
-                        appendToast: true,
-                    });
+                    vm.$bvToast.toast(
+                        `${
+                            vm.mode == "add" ? "Created new" : "Updated"
+                        } administrator`,
+                        {
+                            title: `Success`,
+                            toaster: `b-toaster-top-right`,
+                            solid: true,
+                            variant: "success",
+                            appendToast: true,
+                        }
+                    );
+                    vm.getList(1)
                 }
             } else if (res.status == 422) {
                 var e = res.data.errors;
