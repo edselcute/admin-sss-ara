@@ -116,12 +116,6 @@ const restrictions = require('../restrictions')
 const chkprofile = store.dispatch('auth/getProfile')
 
 function getRestriction(user_type) {
-    // 1 => "masteradmin",
-    //         2 => "admin",
-    //         3 => "declarator",
-    //         4 => "cashier",
-    //         5 => "player",
-    //         6 => "manager",
     var access = []
     switch (user_type) {
         case 1:
@@ -133,40 +127,29 @@ function getRestriction(user_type) {
 
 router.beforeEach(async(to, from, next) => {
     var access = []
+        /* Checking if the user is logged in or not. If the user is logged in, it checks if the user has
+        access to the page. If the user is not logged in, it redirects the user to the login page. */
     if (await chkprofile && to.matched.some(record => record.meta.requiresAuth)) {
         if (!sg['auth/authenticated']) {
-            console.log('requiresAuth 1')
-            next({
-                name: 'login',
-            })
+            next({ name: 'login' })
         } else {
-            console.log('requiresAuth 2')
             access = getRestriction(sg['auth/user_type'])
             if (!access.includes(to.name)) {
-                console.log('requiresAuth 2.1')
                 next({ name: access[0] })
             } else {
-                console.log('requiresAuth 2.2')
                 next()
             }
         }
     } else if (await chkprofile && to.matched.some(record => record.meta.requiresVisitor)) {
         if (sg['auth/authenticated']) {
-            console.log('requiresVisitor 1')
             access = getRestriction(sg['auth/user_type'])
             next({ name: access[0] })
         } else {
-            console.log('requiresVisitor 2')
-
             next()
         }
     } else {
         next() // make sure to always call next()!
     }
-
-    // if (to.meta && to.meta.layout) {
-    //     store.commit('setLayout', to.meta.layout)
-    // }
 })
 
 

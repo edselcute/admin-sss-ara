@@ -15,9 +15,7 @@ import sitepref from './modules/sitepref'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {
-        loading: false
-    },
+    state: {},
     mutations: {},
     actions: {},
     modules: {
