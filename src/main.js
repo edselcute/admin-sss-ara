@@ -65,6 +65,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import './mixins'
 
 Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 Vue.use(VueSweetalert2)
 
 new Vue({
