@@ -8,7 +8,10 @@
                 </a>
             </div>
             <div class="pull-right">
-                <a href="#" id="responsive-menu-trigger">
+                <a
+                    href="#"
+                    id="responsive-menu-trigger"
+                    @click="toggleSideBar()">
                     <i class="fa fa-bars"></i>
                 </a>
             </div>
@@ -32,6 +35,21 @@
 <script>
 export default {
     name: "AppHeader",
+    data() {
+        return {
+            sidebar_open: false,
+        };
+    },
+    methods: {
+        toggleSideBar() {
+            if (!this.sidebar_open) {
+                document.body.setAttribute("class", "sidebar-main-open");
+            } else {
+                document.body.classList.remove("sidebar-main-open");
+            }
+            this.sidebar_open = !this.sidebar_open;
+        },
+    },
     mounted() {},
 };
 </script>
